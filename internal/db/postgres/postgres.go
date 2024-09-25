@@ -155,6 +155,7 @@ func (p *PostgresDriver) SetUpDB() {
 }
 
 func (p *PostgresDriver) GetTables() {
+	log.Println("\tGetTables()")
 	rows, err := p.Pool.Query("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'")
 	if err != nil {
 		log.Println(err)
@@ -162,7 +163,6 @@ func (p *PostgresDriver) GetTables() {
 	}
 	defer rows.Close()
 
-	// Чтение результатов запроса
 	for rows.Next() {
 		var tableName string
 		err := rows.Scan(&tableName)
@@ -170,5 +170,8 @@ func (p *PostgresDriver) GetTables() {
 			log.Println(err)
 			return
 		}
+		log.Println(tableName)
 	}
+
+	log.Println("\texit GetTables()")
 }

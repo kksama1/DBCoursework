@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	log.Println("server started!")
 
 	cfg, err := config.LoadConfig[config.DatabaseConfig]()
 	if err != nil {
@@ -31,7 +32,6 @@ func main() {
 		Addr:    ":8080",
 		Handler: router,
 	}
-	log.Println("server started!")
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
