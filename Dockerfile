@@ -20,4 +20,7 @@ COPY --from=builder /usr/loclal/src/bin/app /
 
 COPY .env  /
 
+COPY src/sql/ /usr/local/src/db/sql/
+
+
 CMD ["/app"]

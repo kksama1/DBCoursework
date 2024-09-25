@@ -23,6 +23,9 @@ func main() {
 		}
 	}()
 
+	service.DB.SetUpDB()
+	service.DB.GetTables()
+
 	router := http.NewServeMux()
 	server := http.Server{
 		Addr:    ":8080",
