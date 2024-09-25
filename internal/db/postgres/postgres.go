@@ -4,11 +4,15 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+	"io"
 	"log"
+	"os"
 	"time"
 )
 
 type DatabaseDriver interface {
+	SetUpDB()
+	GetTables()
 	CloseConnection() error
 }
 
@@ -59,4 +63,112 @@ func (p *PostgresDriver) CloseConnection() error {
 	}
 	log.Println("connection closed")
 	return nil
+}
+
+func (p *PostgresDriver) SetUpDB() {
+	sqlFile, err := os.Open("/usr/local/src/db/sql/participants.sql")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlFile.Close()
+
+	sqlBytes, err := io.ReadAll(sqlFile)
+	if err != nil {
+		panic(err)
+	}
+
+	createTableQuery := string(sqlBytes)
+
+	_, err = p.Pool.Exec(createTableQuery)
+	if err != nil {
+		panic(err)
+	}
+
+	sqlFile, err = os.Open("/usr/local/src/db/sql/drivers.sql")
+	if err != nil {
+		panic(err)
+	}
+
+	sqlBytes, err = io.ReadAll(sqlFile)
+	if err != nil {
+		panic(err)
+	}
+
+	createTableQuery = string(sqlBytes)
+
+	_, err = p.Pool.Exec(createTableQuery)
+	if err != nil {
+		panic(err)
+	}
+
+	sqlFile, err = os.Open("/usr/local/src/db/sql/vehicles.sql")
+	if err != nil {
+		panic(err)
+	}
+
+	sqlBytes, err = io.ReadAll(sqlFile)
+	if err != nil {
+		panic(err)
+	}
+
+	createTableQuery = string(sqlBytes)
+
+	_, err = p.Pool.Exec(createTableQuery)
+	if err != nil {
+		panic(err)
+	}
+
+	sqlFile, err = os.Open("/usr/local/src/db/sql/accidents.sql")
+	if err != nil {
+		panic(err)
+	}
+
+	sqlBytes, err = io.ReadAll(sqlFile)
+	if err != nil {
+		panic(err)
+	}
+
+	createTableQuery = string(sqlBytes)
+
+	_, err = p.Pool.Exec(createTableQuery)
+	if err != nil {
+		panic(err)
+	}
+
+	sqlFile, err = os.Open("/usr/local/src/db/sql/accident_participants.sql")
+	if err != nil {
+		panic(err)
+	}
+
+	sqlBytes, err = io.ReadAll(sqlFile)
+	if err != nil {
+		panic(err)
+	}
+
+	createTableQuery = string(sqlBytes)
+
+	_, err = p.Pool.Exec(createTableQuery)
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+func (p *PostgresDriver) GetTables() {
+	rows, err := p.Pool.Query("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer rows.Close()
+
+	// Чтение результатов запроса
+	for rows.Next() {
+		var tableName string
+		err := rows.Scan(&tableName)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	}
 }
