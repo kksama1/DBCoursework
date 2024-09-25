@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "kksama"
+      POSTGRES_PASSWORD: "kksama1"
+      POSTGRES_DB: "DB"
+    networks:
+      - mynetwork
+    ports:
+      - "5432:5432"
+  app:
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - postgres
+
+
+networks:
+  mynetwork:
+    driver: bridge
