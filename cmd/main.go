@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/kksama1/DBCoursework/internal/common"
 	"github.com/kksama1/DBCoursework/internal/config"
 	"github.com/kksama1/DBCoursework/internal/db/postgres"
+	"github.com/kksama1/DBCoursework/internal/handlers"
 	"log"
 	"net/http"
 )
@@ -16,7 +16,7 @@ func main() {
 		log.Fatal(err)
 	}
 	pool := postgres.CreateConnection(cfg.Host, cfg.Port, cfg.Database, cfg.Username, cfg.Password, cfg.Sslmode)
-	service := common.NewService(pool)
+	service := handlers.NewService(pool)
 	defer func() {
 		err = service.DB.CloseConnection()
 		if err != nil {
@@ -32,6 +32,9 @@ func main() {
 		Addr:    ":8080",
 		Handler: router,
 	}
+
+	router.HandleFunc("/generateNums", service.GeneratePlatese)
+	router.HandleFunc("/test", service.GenerateTest)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)

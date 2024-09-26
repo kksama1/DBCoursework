@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"github.com/kksama1/DBCoursework/internal/model"
 	_ "github.com/lib/pq"
 	"io"
 	"log"
@@ -14,6 +15,10 @@ type DatabaseDriver interface {
 	SetUpDB()
 	GetTables()
 	CloseConnection() error
+	InsertParticipant(participant model.Participant) (int, error)
+	InsertVehicle(vehicle model.Vehicle) (int, error)
+	InsertAccident(accident model.Accident) (int, error)
+	InsertAccidentParticipant(accidentParticipant model.AccidentParticipant) (int, error)
 }
 
 var _ DatabaseDriver = (*PostgresDriver)(nil)
