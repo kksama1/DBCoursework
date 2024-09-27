@@ -160,7 +160,7 @@ func (s *Service) GenerateTest(w http.ResponseWriter, r *http.Request) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	const numParticipants = 10
+	var numParticipants = rand.Intn(4) + 2
 	participants := make([]model.Participant, 0, numParticipants) // Изменяем размер массива
 	vehicles := make([]model.Vehicle, 0)
 	var accidentID int

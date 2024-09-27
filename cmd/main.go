@@ -34,7 +34,11 @@ func main() {
 	}
 
 	router.HandleFunc("/generateNums", service.GeneratePlatese)
-	router.HandleFunc("/test", service.GenerateTest)
+	router.HandleFunc("/generate", service.GenerateTest)
+	router.HandleFunc("/getAllAccidents", service.GetAllAccidents)
+	router.HandleFunc("/getParticipantsByAccidentIDHandler", service.GetParticipantsByAccidentIDHandler)
+	router.HandleFunc("/totalAccidents", service.TotalAccidentHandler)
+	router.HandleFunc("/byTime", service.GetAccidentReportByDayAndTimeHandler)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)

@@ -9,6 +9,10 @@ import (
 type ServiceHandler interface {
 	GeneratePlatese(w http.ResponseWriter, r *http.Request)
 	GenerateTest(w http.ResponseWriter, r *http.Request)
+	GetAllAccidents(w http.ResponseWriter, r *http.Request)
+	GetParticipantsByAccidentIDHandler(w http.ResponseWriter, r *http.Request)
+	TotalAccidentHandler(w http.ResponseWriter, r *http.Request)
+	GetAccidentReportByDayAndTimeHandler(w http.ResponseWriter, r *http.Request)
 }
 
 var _ ServiceHandler = (*Service)(nil)
