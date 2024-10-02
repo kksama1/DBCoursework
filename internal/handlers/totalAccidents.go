@@ -16,7 +16,7 @@ func (s *Service) TotalAccidentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Формирование HTML-страницы
+	// Формирование HTML-страницы с навигационной панелью
 	tmpl := `
 	<!DOCTYPE html>
 	<html lang="ru">
@@ -38,9 +38,39 @@ func (s *Service) TotalAccidentHandler(w http.ResponseWriter, r *http.Request) {
 				border-radius: 5px;
 				background-color: #f9f9f9;
 			}
+			/* Стили для навигационной панели */
+			.navbar {
+				overflow: hidden;
+				background-color: #f2f2f2;
+				margin-bottom: 20px;
+				border-bottom: 1px solid #ddd;
+			}
+			.navbar a {
+				float: left;
+				display: block;
+				color: black;
+				text-align: center;
+				padding: 14px 16px;
+				text-decoration: none;
+				border-right: 1px solid #ddd;
+			}
+			.navbar a:last-child {
+				border-right: none;
+			}
+			.navbar a:hover {
+				background-color: #f5f5f5;
+				color: black;
+			}
 		</style>
 	</head>
 	<body>
+		<!-- Навигационная панель -->
+		<div class="navbar">
+			<a href="/getAllAccidents">Все ДТП</a>
+			<a href="/totalAccidents">Общее количество ДТП</a>
+			<a href="/byTime">ДТП по дням недели и времени суток</a>
+		</div>
+
 		<div class="container">
 			<h1>Общее количество ДТП</h1>
 			<p>Всего ДТП: <strong>{{.TotalAccidents}}</strong></p>
